@@ -27,7 +27,7 @@ Here is a little demo game to show how to use CosmWasm to create a game with vul
   - Use `node server.js --arm` to use the ARM artifacts
   - Listen on port 3001
   - Contracts are deployed automatically
-- Start the client
+- Start the client `cd client && npm install && node server.js`
   - Listen on port 3000
 - Open your browser at http://localhost:3000
   - Keplr will ask to connect to the local chain
