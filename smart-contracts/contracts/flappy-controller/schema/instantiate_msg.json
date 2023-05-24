@@ -1,0 +1,19 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "InstantiateMsg",
+  "type": "object",
+  "required": [
+    "admin",
+    "cw20_address"
+  ],
+  "properties": {
+    "admin": {
+      "description": "The admin address",
+      "type": "string"
+    },
+    "cw20_address": {
+      "description": "The flappy token contract",
+      "type": "string"
+    }
+  }
+}

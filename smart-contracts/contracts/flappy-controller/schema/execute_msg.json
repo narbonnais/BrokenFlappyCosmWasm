@@ -1,0 +1,87 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ExecuteMsg",
+  "oneOf": [
+    {
+      "description": "After a game is played, the winner can claim their reward",
+      "type": "object",
+      "required": [
+        "mint_to_user"
+      ],
+      "properties": {
+        "mint_to_user": {
+          "type": "object",
+          "required": [
+            "amount",
+            "recipient"
+          ],
+          "properties": {
+            "amount": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            },
+            "recipient": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update the config",
+      "type": "object",
+      "required": [
+        "update_config"
+      ],
+      "properties": {
+        "update_config": {
+          "type": "object",
+          "properties": {
+            "admin": {
+              "type": [
+                "string",
+                "null"
+              ]
+            },
+            "cw20_address": {
+              "type": [
+                "string",
+                "null"
+              ]
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    {
+      "description": "Update the best player",
+      "type": "object",
+      "required": [
+        "set_best_player"
+      ],
+      "properties": {
+        "set_best_player": {
+          "type": "object",
+          "required": [
+            "address",
+            "score"
+          ],
+          "properties": {
+            "address": {
+              "type": "string"
+            },
+            "score": {
+              "type": "integer",
+              "format": "uint64",
+              "minimum": 0.0
+            }
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  ]
+}
