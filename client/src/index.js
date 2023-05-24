@@ -5,7 +5,7 @@ import PlayScene from './scenes/PlayScene';
 
 const config = {
     type: Phaser.AUTO,
-    width: 288,
+    width: 288 * 3,
     height: 512,
     physics: {
         default: 'arcade',

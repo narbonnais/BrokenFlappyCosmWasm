@@ -4,6 +4,8 @@
 
 Here is a little demo game to show how to use CosmWasm to create a game with vulnerabilities. It uses a web client to play the game, a server to store the high scores and activate the smart contract, and a smart contract to mint and burn tokens.
 
+![Screenshot](./demo.png)
+
 ## Development environment
 
 * Keplr wallet

@@ -45,8 +45,10 @@ export default class MenuScene extends Phaser.Scene {
         console.log("MenuScene create");
 
         // Terrain
-        this.bg = this.add.sprite(0, 0, 'sky').setOrigin(0, 0);
-        this.ground = this.add.sprite(0, this.sys.game.config.height - CONSTANTS.GROUND_HEIGHT, 'ground').setOrigin(0, 0);
+        for (let i = 0; i < 3; i++) {
+            const bg = this.add.sprite(i * 288, 0, 'sky').setOrigin(0, 0);
+            const ground = this.add.sprite(i * 288, this.sys.game.config.height - CONSTANTS.GROUND_HEIGHT, 'ground').setOrigin(0, 0);
+        }
 
         // Display a message to click to start
         const text = this.add.text(0, 250, 'Click to start!', { fontSize: '20px', fill: '#000' });
@@ -74,11 +76,9 @@ export default class MenuScene extends Phaser.Scene {
         if (scores.length == 0) {
             const textBestScore = this.add.text(0, 0, `Best score: 0 by no one`, { fontSize: '16px', fill: '#000' }).setOrigin(0, 0);
             textBestScore.setDepth(2);
-            // Phaser.Display.Align.In.Center(textBestScore, this.add.zone(0, 0, this.sys.game.config.width, this.sys.game.config.height));
         } else {
             const textBestScore = this.add.text(0, 0, `Best score: ${scores[0].score}\nby ${scores[0].user}`, { fontSize: '16px', fill: '#000' }).setOrigin(0, 0);
             textBestScore.setDepth(2);
-            // Phaser.Display.Align.In.Center(textBestScore, this.add.zone(0, 0, this.sys.game.config.width, this.sys.game.config.height));
         }
 
         // Start the game on click, if the player has enough coins

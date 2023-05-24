@@ -30,22 +30,20 @@ export default class PlayScene extends Phaser.Scene {
 
     create() {
         // Terrain
-        this.bg = this.add.sprite(0, 0, 'sky').setOrigin(0, 0);
+        for (let i = 0; i < 3; i++) {
+            const bg = this.add.sprite(i * 288, 0, 'sky').setOrigin(0, 0);
+        }
 
         // Create two ground sprites
-        this.ground1 = this.physics.add.sprite(0, this.sys.game.config.height - CONSTANTS.GROUND_HEIGHT, 'ground').setOrigin(0, 0);
-        this.ground2 = this.physics.add.sprite(this.ground1.width, this.sys.game.config.height - CONSTANTS.GROUND_HEIGHT, 'ground').setOrigin(0, 0);
-
-        this.ground1.body.allowGravity = false;
-        this.ground1.body.immovable = true;
-        this.ground2.body.allowGravity = false;
-        this.ground2.body.immovable = true;
-
-        this.ground1.setVelocityX(CONSTANTS.VELOCITY_X);
-        this.ground2.setVelocityX(CONSTANTS.VELOCITY_X);
-
-        this.ground1.setDepth(1);
-        this.ground2.setDepth(1);
+        this.grounds = [];
+        for (let i = 0; i < 4; i++) {
+            const ground = this.physics.add.sprite(i * 288, this.sys.game.config.height - CONSTANTS.GROUND_HEIGHT, 'ground').setOrigin(0, 0);
+            ground.body.allowGravity = false;
+            ground.body.immovable = true;
+            ground.setVelocityX(CONSTANTS.VELOCITY_X);
+            ground.setDepth(1);
+            this.grounds.push(ground);
+        }
 
         // Bird
         const birdStartX = 100;
@@ -63,8 +61,9 @@ export default class PlayScene extends Phaser.Scene {
         this.score = 0;
 
         // Colliders
-        this.physics.add.collider(this.bird, this.ground1, this.gameOver, null, this);
-        this.physics.add.collider(this.bird, this.ground2, this.gameOver, null, this);
+        this.grounds.forEach(ground => {
+            this.physics.add.collider(this.bird, ground, this.gameOver, null, this);
+        });
 
         this.physics.add.collider(this.bird, this.pipes, this.gameOver, null, this);
 
@@ -75,8 +74,9 @@ export default class PlayScene extends Phaser.Scene {
         // Start the scene in a paused state
         this.physics.pause();
         this.bird.body.allowGravity = false;
-        this.ground1.setVelocityX(0);
-        this.ground2.setVelocityX(0);
+        this.grounds.forEach(ground => {
+            ground.setVelocityX(0);
+        });
         this.pipes.setVelocityX(0, 0);
 
         this.input.once('pointerdown', this.startGame, this);  // listen for the first click
@@ -91,8 +91,9 @@ export default class PlayScene extends Phaser.Scene {
     startGame() {
         this.physics.resume();
         this.bird.body.allowGravity = true;
-        this.ground1.setVelocityX(CONSTANTS.VELOCITY_X);
-        this.ground2.setVelocityX(CONSTANTS.VELOCITY_X);
+        this.grounds.forEach(ground => {
+            ground.setVelocityX(CONSTANTS.VELOCITY_X);
+        });
         this.pipes.setVelocityX(CONSTANTS.VELOCITY_X, 0);
         this.bird.setVelocityY(CONSTANTS.JUMP_VELOCITY_Y);
 
@@ -197,12 +198,18 @@ export default class PlayScene extends Phaser.Scene {
             }
 
             // Update ground position
-            if (this.ground1.x + this.ground1.width < 0) {
-                this.ground1.x = this.ground2.x + this.ground2.width;
-            }
-            if (this.ground2.x + this.ground2.width < 0) {
-                this.ground2.x = this.ground1.x + this.ground1.width;
-            }
+            // if (this.ground1.x + this.ground1.width < 0) {
+            //     this.ground1.x = this.ground2.x + this.ground2.width;
+            // }
+            // if (this.ground2.x + this.ground2.width < 0) {
+            //     this.ground2.x = this.ground1.x + this.ground1.width;
+            // }
+            this.grounds.forEach(ground => {
+                if (ground.x + ground.width < 0) {
+                    const index = this.grounds.indexOf(ground);
+                    ground.x = this.grounds[(this.grounds.indexOf(ground) - 1 + this.grounds.length) % this.grounds.length].x + ground.width;
+                }
+            });
         }
     }
 }

@@ -283,21 +283,32 @@ app.post('/scores', async (req, res) => {
         // Set the best player
         cosmJSControllerSetBestPlayer(user, score).then((result) => {
             console.log('Transaction Result: ', result);
+
+            // Note: we need this here becase of the account sequence
+            // Send coins to user
+            cosmJSControllerMintCoins(user, coinsToMint).then((result) => {
+                console.log('Transaction Result: ', result);
+            }).catch((error) => {
+                console.error('Failed to send coins: ', error);
+                res.status(500).send({ message: "Failed to send coins" });
+                return;
+            });
         }).catch((error) => {
             console.error('Failed to set best player: ', error);
             res.status(500).send({ message: "Failed to set best player" });
             return;
         });
+    } else {
+        // Send coins to user
+        cosmJSControllerMintCoins(user, coinsToMint).then((result) => {
+            console.log('Transaction Result: ', result);
+        }).catch((error) => {
+            console.error('Failed to send coins: ', error);
+            res.status(500).send({ message: "Failed to send coins" });
+            return;
+        });
     }
 
-    // Send coins to user
-    cosmJSControllerMintCoins(user, coinsToMint).then((result) => {
-        console.log('Transaction Result: ', result);
-    }).catch((error) => {
-        console.error('Failed to send coins: ', error);
-        res.status(500).send({ message: "Failed to send coins" });
-        return;
-    });
 
     // Does the user exist in the database?
     const userScore = await dbGetUserScore(user);
