@@ -37,10 +37,42 @@ export default class BootScene extends Phaser.Scene {
                             coinMinimalDenom: "stake",
                             coinDecimals: 6,
                         },
+                        bip44: {
+                            coinType: 118,
+                        },
+                        bech32Config: {
+                            bech32PrefixAccAddr: "wasm",
+                            bech32PrefixAccPub: "wasmpub",
+                            bech32PrefixValAddr: "wasmvaloper",
+                            bech32PrefixValPub: "wasmvaloperpub",
+                            bech32PrefixConsAddr: "wasmvalcons",
+                            bech32PrefixConsPub: "wasmvalconspub",
+                        },
+                        currencies: [
+                            {
+                                coinDenom: "STAKE",
+                                coinMinimalDenom: "stake",
+                                coinDecimals: 6,
+                            },
+                        ],
+                        feeCurrencies: [
+                            {
+                                coinDenom: "STAKE",
+                                coinMinimalDenom: "stake",
+                                coinDecimals: 6,
+                            },
+                        ],
+                        coinType: 118,
+                        gasPriceStep: {
+                            low: 0.1,
+                            average: 0.25,
+                            high: 0.4,
+                        },
                     });
                     await window.keplr.enable("localnet");
-                } catch {
-                    alert("Failed to suggest the chain");
+                }
+                catch(e) {
+                    alert("Error: failed to enable");
                 }
             } else {
                 alert("Please use the recent version of keplr extension");
